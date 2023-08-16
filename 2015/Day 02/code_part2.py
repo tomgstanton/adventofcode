@@ -1,6 +1,6 @@
 import code_part1
 
-dir = '2015\Day Two\input.txt'
+dir = '2015\Day 02\input.txt'
 string = open(dir,'r')
 inputlines = string.readlines()
 

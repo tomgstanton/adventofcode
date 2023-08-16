@@ -1,5 +1,5 @@
 import code_part1
-dir = '2015\Day One\input.txt'
+dir = '2015\Day 01\input.txt'
 string = open(dir,'r')
 inputstring = string.read()
 
