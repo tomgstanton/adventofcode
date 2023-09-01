@@ -1,6 +1,4 @@
-import re
-
-dir = '2015\Day 07\input.txt'
+dir = '2015/Day 07/input.txt'
 string = open(dir,'r')
 inputlines = string.readlines()
 
@@ -49,7 +47,7 @@ def FunctionAND(list):
     y = Make16Bit(list[1])
     for position in range(len(x)):
         character = '0'
-        if x[position] == '1' and y[position] == '1':  #Maybe remove quotes#
+        if x[position] == '1' and y[position] == '1':
             character = '1'
         output += character
     output = int(output,2)
@@ -60,9 +58,9 @@ def FunctionOR(list):
     x = Make16Bit(list[0])
     y = Make16Bit(list[1])
     for position in range(len(x)):
-        character = '0'
-        if x[position] == '1' or y[position] == '1':  #Maybe remove quotes#
-            character = '1'
+        character = '1'
+        if x[position] == '0' and y[position] == '0':
+            character = '0'
         output += character
     output = int(output,2)
     return output
@@ -72,7 +70,7 @@ def FunctionNOT(list):
     x = Make16Bit(list[0])
     for position in range(len(x)):
         character = '0'
-        if x[position] == '0':  #Maybe remove quotes#
+        if x[position] == '0':
             character = '1'
         output += character
     output = int(output,2)
@@ -82,20 +80,22 @@ def FunctionRSHIFT(list):
     output = ''
     x = Make16Bit(list[0])
     y = int(list[1])
-    for position in range(len(x)):
-        character = x[position-y]
-        output += character
-    output = int(output,2)
+    value = x
+    for number in range(y):
+        value = '0'+value
+        value = value[:-1]
+    output = int(value,2)
     return output
 
 def FunctionLSHIFT(list):
     output = ''
     x = Make16Bit(list[0])
     y = int(list[1])
-    for position in range(len(x)):
-        character = x[position-(len(x)-y)]
-        output += character
-    output = int(output,2)
+    value = x
+    for number in range(y):
+        value = value+'0'
+        value = value[1:]
+    output = int(value,2)
     return output
 
 def CountUnknownValues():
@@ -114,14 +114,11 @@ def CheckDict(string):
 def CheckInputs(dict):
     output = True
     check =[]
-    #print(dict['inputs'])
     for item in dict['inputs']:
         try:
             int(item)
             check.append('pass')
-            #print('integar',item)
         except:
-            #print('nonintegar',item)
             check.append(CheckDict(item))
     if 'fail' in check:
         output = False
@@ -130,10 +127,10 @@ def CheckInputs(dict):
 def ApplyFunction(item):
     value = None
     inputs = []
-    for input in item['inputs']:
-        number = input
+    for element in item['inputs']:
+        number = element
         try:
-            number = Values.values[input]
+            number = Values.values[element]
         except:
             None
         inputs.append(number)
@@ -149,41 +146,21 @@ def ApplyFunction(item):
         value = FunctionLSHIFT(inputs)
     if item['function'] == 'RSHIFT':
         value = FunctionRSHIFT(inputs)
-    print(inputs,item['function'])
-    print(item['output'],Values.values[item['output']],value)
-    Values.values[item['output']] = value
+    Values.values[item['output']] = value    
 
 def Apply(list):
     for item in list:
         if CheckInputs(item) == True and Values.values[item['output']] == None:             
             ApplyFunction(item)    
 
-def FindValueByKey(string):
-    output = Values.values[string] 
-    return output  
-
-def Calculate(key):    
-    instructions = ExtractInstructions(inputlines)
+def Calculate(lines):    
+    instructions = ExtractInstructions(lines)
     while CountUnknownValues() != 0:
-        print('unknown values:',CountUnknownValues())
         Apply(instructions)
-        print('not finished')
-    output = FindValueByKey(key)
-    return output
 
 Values = ValuesDict()
-answer = Calculate('a')
+Calculate(inputlines)
 
-print('Answer is: \'a\' =',answer)
-#print(Values.values)
-
-#Values = ValuesDict()
-#ExtractInstructions(inputlines)
-#print(FunctionAND([49150, 54125]))#37740
-#print(FunctionOR([98,1]))#99
-#print(FunctionLSHIFT([1,'15']))#32768
-#print(FunctionRSHIFT([61355,2]))#64490
-#print(FunctionNOT([23925]))#41610
-#print(FunctionNOT([456]))
-#print(123)
-#print(456)
+results = ['a']
+for result in results:
+    print('Answer is:',result,'=',Values.values[result])
