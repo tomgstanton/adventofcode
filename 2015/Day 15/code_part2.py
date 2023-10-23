@@ -67,6 +67,7 @@ def ScoreRatio(combo,ingredients,dict):
         score = IngredientScore(combo[x],dict[ingredients[x]])
         scores.append(score)
     rejigged_scores = [list(i) for i in zip(*scores)]
+    calories_scores = rejigged_scores[-1]
     rejigged_scores = rejigged_scores[0:4]## This Step Removes Calorie Information##
     summed_scores = []
     for x in rejigged_scores:
@@ -78,6 +79,8 @@ def ScoreRatio(combo,ingredients,dict):
     value = math.prod(summed_scores)
     if value > output:
         output = value
+    if sum(calories_scores) != 500:
+        output = 0
     return output
 
 def ScoreCombinations(ingredients,dict):
