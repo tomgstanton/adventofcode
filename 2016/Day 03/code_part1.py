@@ -1,4 +1,4 @@
-dir = '2016/Day 3/input.txt'
+dir = '2016/Day 03/input.txt'
 string = open(dir,'r')
 inputlines = string.readlines()
 

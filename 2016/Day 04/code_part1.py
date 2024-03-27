@@ -1,4 +1,4 @@
-dir = '2016/Day 4/input.txt'
+dir = '2016/Day 04/input.txt'
 string = open(dir,'r')
 inputlines = string.readlines()
 
@@ -13,8 +13,10 @@ def ReadInput(inputlines):
 
 def ParseName(name):
     splits = name.split('-')
-    span = len(splits[-1])+1
-    encrypted_name = name[:-span]
+    encrypted_name = ''
+    for split in splits:
+        if split != splits[-1]:
+            encrypted_name += split  
     further_splits = splits[-1].split('[')
     sector_id = further_splits[0]
     checksum = further_splits[1][:-1]
@@ -36,33 +38,13 @@ def CheckSum(name):
             return output
         output += count['letter']
 
-def GetMap(number):
-    map = {'-':' '}
-    alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-    adjust = number % len(alphabet)
-    changed_alphabet = alphabet[adjust:]+alphabet[:adjust]
-    for letter in alphabet:
-        map[letter] = changed_alphabet[alphabet.index(letter)]
-    return map
-
-def EasterCheck(name):
-    contraband = ['egg','dye','rabbit','jellybean','chocolate','bunny','scavenger','grass','candy','flower','basket']
-    for item in contraband:
-        if item in name:
-            return True
-    return False
-
 def CheckNames():
-    output = []
+    output = 0
     for name in Encrypted.names:
         parsed_name = ParseName(name)
-        letter_map = GetMap(int(parsed_name[1]))
-        changed_name = ''
-        for letter in parsed_name[0]:
-            new_letter = letter_map.get(letter)
-            changed_name += new_letter
-        if EasterCheck(changed_name) == False:
-            output.append([changed_name,parsed_name[1]])
+        checksum = CheckSum(parsed_name[0])
+        if checksum == parsed_name[2]:
+            output += int(parsed_name[1])
     return output
 
 def Calculate(inputlines):
@@ -73,6 +55,3 @@ def Calculate(inputlines):
 if __name__ == '__main__':
     answer = Calculate(inputlines)
     print('Answer is:',answer)
-
-
-    

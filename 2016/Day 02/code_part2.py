@@ -1,4 +1,4 @@
-dir = '2016/Day 2/input.txt'
+dir = '2016/Day 02/input.txt'
 string = open(dir,'r')
 inputlines = string.readlines()
 
@@ -6,31 +6,35 @@ class Keypad():
     location = 5
 
 def MoveUp():
-    columns = [[7,4,1],[8,5,2],[9,6,3]]
+    columns = [[5],['A',6,2],['D','B',7,3,1],['C',8,4],[9]]
     for column in columns:
         if Keypad.location in column:
-            new_location_index = min(2,column.index(Keypad.location)+1)
+            location_index = column.index(Keypad.location)
+            new_location_index = min(len(column)-1,location_index+1)
             Keypad.location = column[new_location_index]
 
 def MoveDown():
-    columns = [[7,4,1],[8,5,2],[9,6,3]]
+    columns = [[5],['A',6,2],['D','B',7,3,1],['C',8,4],[9]]
     for column in columns:
         if Keypad.location in column:
-            new_location_index = max(0,column.index(Keypad.location)-1)
+            location_index = column.index(Keypad.location)
+            new_location_index = max(0,location_index-1)
             Keypad.location = column[new_location_index]
 
 def MoveRight():
-    rows = [[1,2,3],[4,5,6],[7,8,9]]
+    rows = [[1],[2,3,4],[5,6,7,8,9],['A','B','C'],['D']]
     for row in rows:
         if Keypad.location in row:
-            new_location_index = min(2,row.index(Keypad.location)+1)
+            location_index = row.index(Keypad.location)
+            new_location_index = min(len(row)-1,location_index+1)
             Keypad.location = row[new_location_index]
 
 def MoveLeft():
-    rows = [[1,2,3],[4,5,6],[7,8,9]]
+    rows = [[1],[2,3,4],[5,6,7,8,9],['A','B','C'],['D']]
     for row in rows:
         if Keypad.location in row:
-            new_location_index = max(0,row.index(Keypad.location)-1)
+            location_index = row.index(Keypad.location)
+            new_location_index = max(0,location_index-1)
             Keypad.location = row[new_location_index]
 
 def Track(line):
